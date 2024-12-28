@@ -1,4 +1,12 @@
+app = "clojure-guestbook"
+
 [build]
   dockerfile = "Dockerfile"
+
 [env]
   DATABASE_URL="jdbc:h2:./guestbook_dev.db"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpu_cores = 1
+  memory_mb = 512
