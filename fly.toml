@@ -1,0 +1,4 @@
+[build]
+  dockerfile = "Dockerfile"
+[env]
+  DATABASE_URL="jdbc:h2:./guestbook_dev.db"
