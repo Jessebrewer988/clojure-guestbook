@@ -1,2 +1,3 @@
-{:prod true
- :port 3000}
+{:port 3000
+ :host "0.0.0.0"
+ :database-url "jdbc:h2:./guestbook_dev.db"}

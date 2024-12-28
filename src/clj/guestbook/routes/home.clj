@@ -2,7 +2,6 @@
   (:require
    [guestbook.layout :as layout]
    [guestbook.db.core :as db]
-   [clojure.java.io :as io]
    [guestbook.middleware :as middleware]
    [ring.util.http-response :as response]
    [struct.core :as st]))

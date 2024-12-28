@@ -4,4 +4,4 @@ COPY target/uberjar/guestbook.jar /guestbook/app.jar
 
 EXPOSE 3000
 
-CMD ["java", "-jar", "/guestbook/app.jar"]
+CMD ["java", "-Dhost=0.0.0.0", "-jar", "/guestbook/app.jar"]

@@ -5,8 +5,7 @@
     [guestbook.layout :refer [error-page]]
     [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
     [guestbook.middleware.formats :as formats]
-    [muuntaja.middleware :refer [wrap-format wrap-params]]
-    [guestbook.config :refer [env]]
+    [muuntaja.middleware :refer [wrap-format wrap-params]] 
     [ring.middleware.flash :refer [wrap-flash]]
     [immutant.web.middleware :refer [wrap-session]]
     [ring.middleware.defaults :refer [site-defaults wrap-defaults]])

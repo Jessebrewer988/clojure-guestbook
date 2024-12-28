@@ -3,7 +3,7 @@
    [guestbook.db.core :refer [*db*] :as db]
    [java-time.pre-java8]
    [luminus-migrations.core :as migrations]
-   [clojure.test :refer :all]
+   [clojure.test :refer [use-fixtures deftest is]]
    [next.jdbc :as jdbc]
    [guestbook.config :refer [env]]
    [mount.core :as mount]))
