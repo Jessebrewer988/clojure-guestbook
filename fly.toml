@@ -11,6 +11,13 @@ app = "clojure-guestbook"
 [http_service]
   internal_port = 3000
   force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
 
   [[http_service.ports]]
     port = 80
@@ -22,6 +29,7 @@ app = "clojure-guestbook"
 [checks]
   [checks.alive]
     type = "tcp"
-    interval = "15s"
-    timeout = "2s"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "30s"
     port = 3000

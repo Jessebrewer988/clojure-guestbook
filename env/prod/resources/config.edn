@@ -1,3 +1,9 @@
-{:port 3000
- :host "0.0.0.0"
- :database-url "jdbc:h2:./guestbook_dev.db"}
+{:dev
+ {:port 3000
+  :host "localhost"
+  :database-url "jdbc:h2:./guestbook_dev.db"}  ; Keep H2 for local development
+
+ :prod
+ {:port #long #env PORT
+  :host "0.0.0.0"
+  :database-url #env DATABASE_URL}}  ; Use Fly's PostgreSQL in production
