@@ -1,38 +1,35 @@
 app = "clojure-guestbook"
 
 [build]
-dockerfile = "Dockerfile"
-
-[deploy]
-release_command = "lein run migrate"
+  dockerfile = "Dockerfile"
 
 [[vm]]
-cpu_kind = "shared"
-cpu_cores = 1
-memory_mb = 512
+  cpu_kind = "shared"
+  cpu_cores = 1
+  memory_mb = 512
 
 [http_service]
-internal_port = 3000
-force_https = true
-auto_stop_machines = "stop"
-auto_start_machines = true
-min_machines_running = 0
-[http_service.concurrency]
-type = "requests"
-soft_limit = 200
-hard_limit = 250
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
 
-[[http_service.ports]]
-port = 80
-handlers = ["http"]
-[[http_service.ports]]
-port = 443
-handlers = ["tls", "http"]
+  [[http_service.ports]]
+    port = 80
+    handlers = ["http"]
+  [[http_service.ports]]
+    port = 443
+    handlers = ["tls", "http"]
 
 [checks]
-[checks.alive]
-type = "tcp"
-interval = "30s"
-timeout = "5s"
-grace_period = "30s"
-port = 3000
+  [checks.alive]
+    type = "tcp"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "30s"
+    port = 3000
