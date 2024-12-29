@@ -30,6 +30,8 @@
                  [ring/ring-core "1.9.6"]
                  [ring/ring-defaults "0.3.4"]
                  [selmer "1.12.55"]
+                 [ch.qos.logback/logback-classic "1.2.3"]
+                 [cheshire "5.10.0"]
                  [org.postgresql/postgresql "42.2.27"]]
 
   :min-lein-version "2.0.0"

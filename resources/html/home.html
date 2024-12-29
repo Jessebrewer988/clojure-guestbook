@@ -13,12 +13,15 @@
         
         <div class="reaction-buttons mt-4" x-data="{ 
           async toggleReaction(messageId, type, button) {
+
             try {
+              const csrfToken = document.querySelector('[name=\'__anti-forgery-token\']').value;
+              console.log('CSRF Token:', csrfToken);
               const response = await fetch('/api/reaction', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'X-CSRF-Token': document.querySelector('[name=\'__anti-forgery-token\']').value
+                  'X-CSRF-Token': csrfToken
                 },
                 body: JSON.stringify({
                   message_id: messageId,

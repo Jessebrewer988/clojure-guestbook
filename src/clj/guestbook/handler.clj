@@ -9,18 +9,10 @@
    [guestbook.env :refer [defaults]]
    [mount.core :as mount]))
 
-;; Initialize the app first
-(defn init-app []
-  ((or (:init defaults) (fn []))))
-
-(defn stop-app []
-  ((or (:stop defaults) (fn []))))
-
 (defn- async-aware-default-handler
   ([_] nil)
   ([_ respond _] (respond nil)))
 
-;; Define routes without mount/defstate
 (def app-routes
   (ring/ring-handler
    (ring/router
@@ -41,11 +33,12 @@
 (defn app []
   (middleware/wrap-base #'app-routes))
 
-(ns guestbook.handler
-  (:require
-   [guestbook.middleware :as middleware]))
+(defn init-app []
+  ((or (:init defaults) (fn []))))
 
-;; Initialize mount if needed
+(defn stop-app []
+  ((or (:stop defaults) (fn []))))
+
 (defn init []
   (init-app)
   (mount/start))

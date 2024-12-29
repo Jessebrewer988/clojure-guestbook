@@ -4,7 +4,10 @@
    [guestbook.db.core :as db]
    [guestbook.middleware :as middleware]
    [ring.util.http-response :as response]
-   [struct.core :as st]))
+   [struct.core :as st]
+   [clojure.tools.logging :as log]
+   [ring.util.response :as ring-resp]
+   [cheshire.core :as json]))
 
 (def message-schema
   [[:name
@@ -41,17 +44,16 @@
        (assoc params :timestamp (java.util.Date.)))
       (response/found "/"))))
 
-(defn save-reaction! [{:keys [params headers remote-addr]}]
-  (println (str "Saving reaction: " params))
-  (if-let [errors (validate-reaction params)]
-    (response/bad-request {:errors errors})
-    (do
-      (db/save-reaction!
-       (assoc params
-              :user_identifier remote-addr
-              :timestamp (java.util.Date.)))
-      (println (str "Saved reaction: " params))
-      (response/ok {:status "ok"}))))
+(defn save-reaction! [{:keys [params headers remote-addr body] :as request}]
+  (let [body-params (-> body slurp (json/parse-string true))
+        json-response (json/generate-string
+                       (if-let [errors (validate-reaction body-params)]
+                         {:errors errors}
+                         (do
+                           (db/save-reaction! (assoc body-params :user_identifier remote-addr))
+                           {:status "ok"})))]
+    (-> (ring-resp/response json-response)
+        (ring-resp/content-type "application/json"))))
 
 (defn home-page [{:keys [flash remote-addr] :as request}]
   (layout/render
@@ -68,10 +70,9 @@
 
 (defn home-routes []
   [""
-   {:middleware [middleware/wrap-csrf
-                 middleware/wrap-formats]}
+   {}  ; Remove middleware here
    ["/" {:get home-page
          :post save-message!}]
    ["/about" {:get about-page}]
-   ["/api/reaction" {:post save-reaction!}]
-   ["/api/debug/reactions" {:get get-all-reactions}]])  ; Add this debug route
+   ["/api/reaction" {:post save-reaction! :no-csrf true}]
+   ["/api/debug/reactions" {:get get-all-reactions}]])
