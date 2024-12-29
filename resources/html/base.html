@@ -1,58 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to guestbook</title>
-
-    <!-- styles -->
-    {% style "/assets/bulma/css/bulma.min.css" %}
-    {% style "/assets/material-icons/css/material-icons.min.css" %}
-
-    {% style "/css/screen.css" %}
-  </head>
-  <body>
-      <!-- navbar -->
-      <nav class="navbar is-info">
-          <div class="container">
-              <div class="navbar-brand">
-                  <a class="navbar-item" href="/" style="font-weight:bold;">guestbook</a>
-                  <span class="navbar-burger burger" data-target="nav-menu">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                  </span>
-              </div>
-              <div id="nav-menu" class="navbar-menu">
-                  <div class="navbar-start">
-                      <a href="/" class="navbar-item{% ifequal page "home.html" %} is-active{%endifequal%}">Home</a>
-                      <a href="/about" class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}">About</a>
-                  </div>
-              </div>
-          </div>
-      </nav>
-
-      <section class="section">
-          <div class="container">
-              {% block content %}
-              {% endblock %}
-          </div>
-      </section>
-
-    <!-- scripts -->
-    <script type="text/javascript">
-      (function() {
-        var burger = document.querySelector('.burger');
-        var nav = document.querySelector('#'+burger.dataset.target);
-        burger.addEventListener('click', function(){
-          burger.classList.toggle('is-active');
-          nav.classList.toggle('is-active');
-        });
-      })();
+    <title>Clojure Guestbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#6366f1',
+              secondary: '#818cf8'
+            }
+          }
+        }
+      }
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <nav class="bg-white dark:bg-gray-800 shadow-md">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <a href="/" class="flex items-center text-primary dark:text-secondary font-bold text-xl">
+              clj guestbook
+            </a>
+            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <a href="/" class="inline-flex items-center px-1 pt-1 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-secondary">
+                Home
+              </a>
+              <a href="/about" class="inline-flex items-center px-1 pt-1 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-secondary">
+                About
+              </a>
+            </div>
+          </div>
+          <button 
+            @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)"
+            class="p-2 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-secondary"
+          >
+            <span x-show="!darkMode">🌙</span>
+            <span x-show="darkMode">☀️</span>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-    
-    {% block page-scripts %}
-    {% endblock %}
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {% block content %}
+      {% endblock %}
+    </main>
   </body>
 </html>

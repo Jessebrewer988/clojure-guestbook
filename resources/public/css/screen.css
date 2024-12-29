@@ -1,21 +1,20 @@
 html,
 body {
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 @font-face {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-style: normal;
   font-weight: 400;
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(/assets/material-icons/iconfont/material-icons.woff2) format('woff2'),
-       url(/assets/material-icons/iconfont/material-icons.woff) format('woff');
+  src: local("Material Icons"), local("MaterialIcons-Regular"),
+    url(/assets/material-icons/iconfont/material-icons.woff2) format("woff2"),
+    url(/assets/material-icons/iconfont/material-icons.woff) format("woff");
 }
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px; /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -32,27 +31,44 @@ body {
 }
 
 ul {
-	list-style: none;
+  list-style: none;
 }
 
 ul.messages li {
-	position: relative;
-	font-size: 16px;
-	padding: 5px;
-	border-bottom: 1px dotted #ccc;
+  position: relative;
+  font-size: 16px;
+  padding: 5px;
+  border-bottom: 1px dotted #ccc;
 }
 
 li:last-child {
-	border-bottom: none;
+  border-bottom: none;
 }
 
 li time {
-	font-size: 12px;
-	padding-bottom: 20px;
+  font-size: 12px;
+  padding-bottom: 20px;
 }
 
-form, .error {
-	padding: 30px;
-	margin-bottom: 50px;
-	position: relative;
+form,
+.error {
+  padding: 30px;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.reaction-buttons {
+  margin-top: 0.5rem;
+}
+
+.reaction-btn {
+  margin-right: 0.5rem;
+}
+
+.reaction-btn.is-active {
+  background-color: #f0f0f0;
+}
+
+.reaction-count {
+  margin-left: 0.25rem;
 }

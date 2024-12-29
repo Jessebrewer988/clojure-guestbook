@@ -1,41 +1,110 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="content">
-  <div class="columns">
-    <div class="column">
-      <h3>Messages</h3>
-      <ul class="messages">
-        {% for item in messages %}
-        <li>
-          <time>{{item.timestamp|date:"yyyy-MM-dd HH:mm"}}</time>
-          <p>{{item.message}}</p>
-          <p> - {{item.name}}</p>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
+<div class="space-y-8">
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Messages</h2>
+    <ul class="space-y-6">
+      {% for item in messages %}
+      <li class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+        <time class="text-sm text-gray-500 dark:text-gray-400">{{item.timestamp|date:"yyyy-MM-dd HH:mm"}}</time>
+        <p class="mt-2 text-gray-800 dark:text-gray-200">{{item.message}}</p>
+        <p class="mt-1 text-gray-600 dark:text-gray-400">- {{item.name}}</p>
+        
+        <div class="reaction-buttons mt-4" x-data="{ 
+          async toggleReaction(messageId, type, button) {
+            try {
+              const response = await fetch('/api/reaction', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': document.querySelector('[name=\'__anti-forgery-token\']').value
+                },
+                body: JSON.stringify({
+                  message_id: messageId,
+                  reaction_type: type
+                })
+              });
+
+              if (response.ok) {
+                const allButtons = button.closest('.reaction-buttons').querySelectorAll('.reaction-btn');
+                allButtons.forEach(btn => {
+                  btn.classList.remove('is-active', 'bg-gray-100', 'dark:bg-gray-700');
+                  const countEl = btn.querySelector('.reaction-count');
+                  const count = parseInt(countEl.textContent);
+                  if (btn.textContent.trim().startsWith(type)) {
+                    countEl.textContent = count;
+                  } else {
+                    countEl.textContent = Math.max(0, count - (btn.classList.contains('is-active') ? 1 : 0));
+                  }
+                });
+
+                const countEl = button.querySelector('.reaction-count');
+                const currentCount = parseInt(countEl.textContent);
+                button.classList.add('is-active', 'bg-gray-100', 'dark:bg-gray-700');
+                countEl.textContent = currentCount + 1;
+              }
+            } catch (error) {
+              console.error('Error sending reaction:', error);
+            }
+          }
+        }">
+          <button
+            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.👍 %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+            @click="toggleReaction('{{item.id}}', '👍', $el)"
+          >
+            👍 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.👍|default:0}}</span>
+          </button>
+          <button
+            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.❤️ %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+            @click="toggleReaction('{{item.id}}', '❤️', $el)"
+          >
+            ❤️ <span class="reaction-count ml-1 dark:text-white">{{item.reactions.❤️|default:0}}</span>
+          </button>
+          <button
+            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.👎 %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+            @click="toggleReaction('{{item.id}}', '👎', $el)"
+          >
+            👎 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.👎|default:0}}</span>
+          </button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
-  <div class="columns">
-    <div class="column">
-      <form method="POST" action="/">
-        {% csrf-field %}
-        <p>
-          Name:
-          <input class="input" type="text" name="name" value="{{name}}" />
-        </p>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Leave a message</h3>
+    <form method="POST" action="/" class="space-y-4">
+      {% csrf-field %}
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="name">Name</label>
+        <input 
+          class="px-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:text-white" 
+          type="text" 
+          name="name" 
+          value="{{name}}"
+        />
         {% if errors.name %}
-        <div class="notification is-danger">{{errors.name|join}}</div>
+        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{errors.name|join}}</p>
         {% endif %}
-        <p>
-          Message:
-          <textarea class="textarea" name="message">{{message}}</textarea>
-        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="message">Message</label>
+        <textarea 
+          class=" py-1 px-2 mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 dark:bg-gray-700 dark:text-white" 
+          name="message" 
+          rows="4"
+        >{{message}}</textarea>
         {% if errors.message %}
-        <div class="notification is-danger">{{errors.message|join}}</div>
+        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{errors.message|join}}</p>
         {% endif %}
-        <input type="submit" class="button is-primary" value="comment" />
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition-colors">
+        Post Message
+      </button>
+    </form>
   </div>
 </div>
 {% endblock %}
