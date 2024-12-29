@@ -41,6 +41,10 @@
 (defn app []
   (middleware/wrap-base #'app-routes))
 
+(ns guestbook.handler
+  (:require
+   [guestbook.middleware :as middleware]))
+
 ;; Initialize mount if needed
 (defn init []
   (init-app)
