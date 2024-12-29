@@ -24,7 +24,7 @@
     st/required
     st/string
     {:message "Invalid reaction type"
-     :validate #(contains? #{"👍" "❤️" "👎"} %)}]])
+     :validate #(contains? #{"thumbsup" "heart" "thumbsdown"} %)}]])
 
 (defn validate-message [params]
   (first (st/validate params message-schema)))

@@ -48,24 +48,24 @@
             }
           }
         }">
-          <button
-            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.👍 %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
-            @click="toggleReaction('{{item.id}}', '👍', $el)"
-          >
-            👍 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.👍|default:0}}</span>
-          </button>
-          <button
-            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.❤️ %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
-            @click="toggleReaction('{{item.id}}', '❤️', $el)"
-          >
-            ❤️ <span class="reaction-count ml-1 dark:text-white">{{item.reactions.❤️|default:0}}</span>
-          </button>
-          <button
-            class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.👎 %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
-            @click="toggleReaction('{{item.id}}', '👎', $el)"
-          >
-            👎 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.👎|default:0}}</span>
-          </button>
+        <button
+        class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.thumbsup %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+        @click="toggleReaction('{{item.id}}', 'thumbsup', $el)"
+        >
+          👍 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.thumbsup|default:0}}</span>
+        </button>
+        <button
+          class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.heart %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+          @click="toggleReaction('{{item.id}}', 'heart', $el)"
+        >
+          ❤️ <span class="reaction-count ml-1 dark:text-white">{{item.reactions.heart|default:0}}</span>
+        </button>
+        <button
+          class="reaction-btn inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors {% if item.user_reactions.thumbsdown %}is-active bg-gray-100 dark:bg-gray-700{% endif %}"
+          @click="toggleReaction('{{item.id}}', 'thumbsdown', $el)"
+        >
+          👎 <span class="reaction-count ml-1 dark:text-white">{{item.reactions.thumbsdown|default:0}}</span>
+        </button>
         </div>
       </li>
       {% endfor %}

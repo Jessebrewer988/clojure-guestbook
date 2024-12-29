@@ -23,17 +23,17 @@
                   *db*
                   ["SELECT m.*,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '👍'), 0) as thumbs_up_count,
+                      WHERE r.message_id = m.id AND r.reaction_type = 'thumbsup'), 0) as thumbs_up_count,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '❤️'), 0) as heart_count,
+                      WHERE r.message_id = m.id AND r.reaction_type = 'heart'), 0) as heart_count,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '👎'), 0) as thumbs_down_count,
+                      WHERE r.message_id = m.id AND r.reaction_type = 'thumbsdown'), 0) as thumbs_down_count,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '👍' AND r.user_identifier = ?), 0) as user_thumbs_up,
+                      WHERE r.message_id = m.id AND r.reaction_type = 'thumbsup' AND r.user_identifier = ?), 0) as user_thumbs_up,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '❤️' AND r.user_identifier = ?), 0) as user_heart,
+                      WHERE r.message_id = m.id AND r.reaction_type = 'heart' AND r.user_identifier = ?), 0) as user_heart,
                      COALESCE((SELECT COUNT(*) FROM reactions r 
-                      WHERE r.message_id = m.id AND r.reaction_type = '👎' AND r.user_identifier = ?), 0) as user_thumbs_down
+                      WHERE r.message_id = m.id AND r.reaction_type = 'thumbsdown' AND r.user_identifier = ?), 0) as user_thumbs_down
                     FROM guestbook m
                     ORDER BY m.timestamp DESC"
                    user-identifier
@@ -42,12 +42,12 @@
                   {:builder-fn next.jdbc.result-set/as-unqualified-lower-maps})]
     (map (fn [message]
            (assoc message
-                  :reactions {"👍" (:thumbs_up_count message 0)
-                              "❤️" (:heart_count message 0)
-                              "👎" (:thumbs_down_count message 0)}
-                  :user_reactions {"👍" (pos? (:user_thumbs_up message))
-                                   "❤️" (pos? (:user_heart message))
-                                   "👎" (pos? (:user_thumbs_down message))}))
+                  :reactions {"thumbsup" (:thumbs_up_count message 0)
+                              "heart" (:heart_count message 0)
+                              "thumbsdown" (:thumbs_down_count message 0)}
+                  :user_reactions {"thumbsup" (pos? (:user_thumbs_up message))
+                                   "heart" (pos? (:user_heart message))
+                                   "thumbsdown" (pos? (:user_thumbs_down message))}))
          messages)))
 
 (defn save-message! [message]

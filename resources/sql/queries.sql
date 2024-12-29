@@ -43,17 +43,17 @@ GROUP BY reaction_type
 -- :doc selects all available messages with their reactions
 SELECT m.*,
   (SELECT COUNT(*) FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '👍') as thumbs_up_count,
+   WHERE r.message_id = m.id AND r.reaction_type = 'thumbsup') as thumbs_up_count,
   (SELECT COUNT(*) FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '❤️') as heart_count,
+   WHERE r.message_id = m.id AND r.reaction_type = 'heart') as heart_count,
   (SELECT COUNT(*) FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '👎') as thumbs_down_count,
+   WHERE r.message_id = m.id AND r.reaction_type = 'thumbsdown') as thumbs_down_count,
   (SELECT COUNT(*) > 0 FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '👍' AND r.user_identifier = :user_identifier) as user_thumbs_up,
+   WHERE r.message_id = m.id AND r.reaction_type = 'thumbsup' AND r.user_identifier = :user_identifier) as user_thumbs_up,
   (SELECT COUNT(*) > 0 FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '❤️' AND r.user_identifier = :user_identifier) as user_heart,
+   WHERE r.message_id = m.id AND r.reaction_type = 'heart' AND r.user_identifier = :user_identifier) as user_heart,
   (SELECT COUNT(*) > 0 FROM reactions r 
-   WHERE r.message_id = m.id AND r.reaction_type = '👎' AND r.user_identifier = :user_identifier) as user_thumbs_down
+   WHERE r.message_id = m.id AND r.reaction_type = 'thumbsdown' AND r.user_identifier = :user_identifier) as user_thumbs_down
 FROM guestbook m
 ORDER BY m.timestamp DESC
 
